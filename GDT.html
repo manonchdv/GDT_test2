@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Dice</title>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        h1 {
+            font-size: 2em;
+        }
+
+        label, select, button, #output {
+            margin-bottom: 10px;
+        }
+
+        #recapList {
+            list-style-type: none; /* Supprimer les puces de la liste */
+            padding: 0; /* Supprimer le remplissage par défaut de la liste */
+        }
+    </style>
+</head>
+<body>
+
+<div id="moodSelectionPage">
+    <h1>Select Your Current Mood</h1>
+    <p>How are you feeling right now?</p>
+    <label for="mood">Choose your mood:</label>
+    <select id="mood" onchange="updateMoodImage()">
+        <option value="cheerful">Cheerful</option>
+        <option value="neutral">Neutral</option>
+        <option value="sad">Sad</option>
+        <option value="excited">Excited</option>
+        <option value="calm">Calm</option>
+        <option value="surprised">Surprised</option>
+        <option value="bored">Bored</option>
+        <option value="irritated">Irritated</option>
+    </select>
+    <img id="moodImage" src="PAM-expressions-of-eight-mood-types-and-neutral.png" alt="Mood Image">
+    <button onclick="goToInstructions()">Next</button>
+</div>
+
+<div id="instructionsPage" style="display: none;">
+    <h1>Game of Dice Task - Instructions</h1>
+    <p>Instructions go here...</p>
+    <button onclick="startGame()">Start Game</button>
+</div>
+
+<div id="gamePage" style="display: none;">
+    <label for="combination">Choose a combination: </label>
+    <select id="combination">
+        <option value="1">Die 1</option>
+        <option value="2">Die 2</option>
+        <option value="3">Die 3</option>
+        <option value="4">Die 4</option>
+        <option value="5">Die 5</option>
+        <option value="6">Die 6</option>
+        <option value="1 or 2">Die 1 or 2</option>
+        <option value="3 or 4">Die 3 or 4</option>
+        <option value="5 or 6">Die 5 or 6</option>
+        <option value="1 or 2 or 3">Die 1 or 2 or 3</option>
+        <option value="4 or 5 or 6">Die 4 or 5 or 6</option>
+        <option value="1 or 2 or 3 or 4">Die 1 or 2 or 3 or 4</option>
+        <option value="2 or 3 or 4 or 5">Die 2 or 3 or 4 or 5</option>
+        <option value="3 or 4 or 5 or 6">Dicase "Die 3"e 3 or 4 or 5 or 6</option>
+     </select>
+
+    <button onclick="throwDice()">Throw Dice</button>
+    <button onclick="quitGame()">Quit</button>
+
+    <div id="output"></div>
+</div>
+
+<div id="recapPage" style="display: none;">
+    <h1>Game Recap</h1>
+    <p>Here are the combinations chosen by the participant:</p>
+    <ul id="recapList"></ul>
+    <button onclick="Save()">Save data</button>
+</div>
+
+<script>
+    let totalAmount = 0;
+    let remainingThrows = 6;
+    let clickCount = 1;
+
+    function goToInstructions() {
+    document.getElementById("moodSelectionPage").style.display = "none";
+    document.getElementById("instructionsPage").style.display = "block";
+}
+
+function startGame() {
+    document.getElementById("instructionsPage").style.display = "none";
+    document.getElementById("gamePage").style.display = "block";
+}
+
+// Ajoutez cette fonction pour passer à la page des instructions lors du clic sur "Next"
+function updateMoodImage() {
+    goToInstructions();
+}
+
+
+    function throwDice() {
+        const selectedCombination = document.getElementById("combination").value;
+        const diceResult = Math.floor(Math.random() * 6) + 1;
+
+        const outputElement = document.getElementById("output");
+        const recapListElement = document.getElementById("recapList");
+
+        let resultMessage = "";
+        let amountWon = 0;
+
+        switch (selectedCombination) {
+            case "1":
+                if (diceResult === 1 || diceResult === 2) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 100
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -100
+                }
+                break;
+            case "2":
+                if (diceResult === 2) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 100
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -100
+                }
+                break;
+            case "3":
+                if (diceResult === 3) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 100
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -100
+                }
+                break;
+			case "4":
+                if (diceResult === 4) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 100
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -100
+                }
+                break;
+			case "5":
+                if (diceResult === 5) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 100
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -100
+                }
+                break;
+			case "6":
+                if (diceResult === 6) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 100
+                } else {
+                    resultMessage = "Sorry, you lose";					amountWon = -100
+                }
+                break;
+			case "1 or 2":
+				if (diceResult === 1 || diceResult === 2) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 50
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -50
+                }
+                break;
+			case "3 or 4":
+				if (diceResult === 3 || diceResult === 4) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 50
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -50
+                }
+                break;
+			case "5 or 6":
+				if (diceResult === 5 || diceResult === 6) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 50
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -50
+                }
+                break;
+			case "1 or 2 or 3":
+				if (diceResult === 1 || diceResult === 2 || diceResult === 3) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 25
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -25
+                }
+                break;
+			case "4 or 5 or 6":
+				if (diceResult === 4 || diceResult === 5 || diceResult === 6) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 25
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -25
+                }
+                break;
+			case "1 or 2 or 3 or 4":
+				if (diceResult === 1 || diceResult === 2 || diceResult === 3 || 				diceResult === 4) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 10
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -10
+                }
+                break;
+			case "2 or 3 or 4 or 5":
+				if (diceResult === 2 || diceResult === 3 || diceResult === 4 || 				diceResult === 5) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 10
+                } else {
+                    resultMessage = "Sorry, you lose";
+					amountWon = -10
+                }
+                break;
+			case "3 or 4 or 5 or 6":
+				if (diceResult === 3 || diceResult === 4 || diceResult === 5 || 				diceResult === 6) {
+                    resultMessage = "Congratulations You win";
+					amountWon = 10
+                } else {
+                    resultMessage = "<br> Sorry, you lose";
+					amountWon = -10
+                }
+                break;
+			   
+
+
+		// Ajoutez d'autres cas pour les combinaisons supplémentaires
+	default:
+                resultMessage = "Invalid combination";
+        }
+
+        totalAmount += amountWon;
+        remainingThrows--;
+
+        outputElement.innerHTML = `<br> Chosen di(c)e = ${selectedCombination} <br> Dice result = ${diceResult} <br><br> ${resultMessage} ${amountWon} grams. <br>Total Amount: ${totalAmount} units. <br><br>Throws remaining: ${remainingThrows}`;
+
+        recapListElement.innerHTML += `<li>Throw ${clickCount}: Combination ${selectedCombination}</li>`;
+        clickCount++;
+
+        if (remainingThrows === 0) {
+            endGame();
+        }
+    }
+
+    function quitGame() {
+        document.getElementById("gamePage").style.display = "none";
+        document.getElementById("moodSelectionPage").style.display = "block";
+        resetGame();
+    }
+
+    function endGame() {
+        document.getElementById("gamePage").style.display = "none";
+        document.getElementById("recapPage").style.display = "block";
+        document.getElementById("totalAmount").innerText = totalAmount; // Display totalAmount
+        resetGame();
+    }
+
+    function displayRecap() {
+        // Ajoutez la combinaison choisie à la liste de récapitulation
+        document.getElementById("recapList").innerHTML += `<li>Throw ${clickCount}: Combination ${selectedCombination}</li>`;
+    }
+
+    function Save() {
+    // Capture d'écran de la page de récapitulation
+    html2canvas(document.getElementById("recapPage")).then(function(canvas) {
+        // Créez une URL de données à partir du canevas
+        var dataURL = canvas.toDataURL();
+        // Créez un élément d'ancrage pour télécharger l'image
+        var a = document.createElement('a');
+        // Définissez l'URL de données comme attribut href
+        a.href = dataURL;
+        // Spécifiez le nom du fichier à télécharger
+        a.download = 'recap_screenshot.png';
+        // Cliquez automatiquement sur l'élément d'ancrage pour déclencher le téléchargement
+        a.click();
+    });
+
+    // Réinitialisez les variables et revenez à la page d'instructions
+    remainingThrows = 6;
+    clickCount = 0;
+    totalAmount = 0;
+    document.getElementById("moodSelectionPage").style.display = "block";
+    document.getElementById("recapPage").style.display = "none";
+    document.getElementById("recapList").innerHTML = ""; // Effacez le récapitulatif précédent
+}
+</script>
+
+</body>
+</html>
